@@ -9,8 +9,6 @@ import com.scm.enums.Role;
 import com.scm.repository.UserRepository;
 import com.scm.services.UserService;
 
-import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
-
 
 @Service
 public class UserServiceImple implements UserService {
@@ -23,8 +21,6 @@ public class UserServiceImple implements UserService {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
-
-
 
 	@Override
 	public void register(RegisterRequest registerRequest) {
