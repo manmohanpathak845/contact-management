@@ -28,15 +28,23 @@ public class AuthController {
 	
 	private final UserService userService;
 	
-	public AuthController(UserService userService) {
+	
+
+	private AuthenticationManager authenticationManager;
+	
+	private JwtService jwtService;
+	
+	public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtService jwtService) {
+		super();
 		this.userService = userService;
+		this.authenticationManager = authenticationManager;
+		this.jwtService = jwtService;
 	}
-	
-	@Autowired
-	AuthenticationManager authenticationManager;
-	@Autowired
-	JwtService jwtService;
-	
+
+
+
+
+
 	@PostMapping("/login")
 	public JwtResponse login(@RequestBody LoginRequest request) {
 		

@@ -30,7 +30,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name="users")
+@Table(name="users") 
 @Getter
 @Setter
 @AllArgsConstructor
@@ -43,7 +43,7 @@ public class User {
 	private Long  userid;
 	
 	@Column(name = "user_name" , nullable = false)
-	@NotBlank
+	@NotBlank(message = "User Name required")
 	private String userName;
 	
 	@Column(name = "email" , unique = true, nullable = false)
