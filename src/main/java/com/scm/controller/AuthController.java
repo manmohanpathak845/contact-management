@@ -34,8 +34,10 @@ public class AuthController {
 	
 	private JwtService jwtService;
 	
-	public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtService jwtService) {
-		super();
+	public AuthController(
+			UserService userService, 
+			AuthenticationManager authenticationManager, 
+			JwtService jwtService) {
 		this.userService = userService;
 		this.authenticationManager = authenticationManager;
 		this.jwtService = jwtService;
@@ -48,12 +50,24 @@ public class AuthController {
 	@PostMapping("/login")
 	public JwtResponse login(@RequestBody LoginRequest request) {
 		
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+		Authentication authentication = authenticationManager
+				.authenticate(
+				new UsernamePasswordAuthenticationToken(
+						request.getEmail(), 
+						request.getPassword()));
 		
-		UserDetails user = (UserDetails)authentication.getPrincipal();
+		UserDetails user = (UserDetails)
+				authentication.getPrincipal();
 		
-		return new JwtResponse(jwtService.generateToken(user));
+		String token = jwtService.generateToken(user);
+		
+		String role = user.getAuthorities()
+				.stream()
+				.findFirst()
+				.get()
+				.getAuthority();
+		
+		return new JwtResponse(token,role);
 		
 	}
 	

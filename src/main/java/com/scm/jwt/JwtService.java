@@ -9,9 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.Setter;
 
 //import io.jsonwebtoken.security.Keys;
 @Service
@@ -27,8 +25,17 @@ public class JwtService {
 	
 	
 	public String generateToken(UserDetails user) {
+		
+		String role = user.getAuthorities()
+				.stream()
+				.findFirst()
+				.get()
+				.getAuthority();
+		
+		
 		return Jwts.builder()
 				.subject(user.getUsername())
+				.claim("role", role)
 				.issuedAt(new Date())
 				.expiration(new Date(System.currentTimeMillis()+3600000))
 				.signWith(getKey())
@@ -43,7 +50,8 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .getSubject();
+                //.get("role",String.class);
+          .getSubject();
 		
 	}
 	

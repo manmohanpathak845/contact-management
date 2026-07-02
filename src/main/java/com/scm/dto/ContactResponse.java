@@ -2,11 +2,15 @@ package com.scm.dto;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ContactResponse {
 	
 	private Long id;
@@ -15,7 +19,7 @@ public class ContactResponse {
 		
 	private String nickName;
 	
-	private String comapany;
+	private String company;
 	
 	private String email;
 

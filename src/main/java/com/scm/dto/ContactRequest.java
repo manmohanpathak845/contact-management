@@ -10,7 +10,7 @@ import lombok.Data;
 public class ContactRequest {
 
 	@NotBlank(message="Name is required")
-	private String Name;
+	private String name;
 	
 	private String nickName;
 	

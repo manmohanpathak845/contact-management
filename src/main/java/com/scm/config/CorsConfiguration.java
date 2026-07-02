@@ -16,8 +16,9 @@ public class CorsConfiguration {
 			public void addCorsMappings(CorsRegistry corsRegistry) {
 				
 				corsRegistry.addMapping("/**")
-					.allowedOriginPatterns("*")
-					.allowedMethods("GET","POST","PUT","DELETE")
+					.allowedOrigins("http://127.0.0.1:5500",
+							"http://localhost:5500")
+					.allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
 					.allowedHeaders("*")
 					.allowCredentials(true);
 				

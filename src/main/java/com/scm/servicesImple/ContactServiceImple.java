@@ -1,5 +1,8 @@
 package com.scm.servicesImple;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -56,7 +59,7 @@ public class ContactServiceImple implements ContactService {
 				.id(contact.getId())
 				.name(contact.getName())
 				.nickName(contact.getNickName())
-				.comapany(contact.getCompany())
+				.company(contact.getCompany())
 				.email(contact.getEmail())
 				.phone(contact.getPhone())
 				.imageUrl(contact.getImageUrl())
@@ -64,5 +67,54 @@ public class ContactServiceImple implements ContactService {
 				.createdAt(contact.getCreatedAt())
 				.build();
 	}
+
+	@Override
+	public Page<ContactResponse> getUserContacts(String email, int page, int size) {
+		// TODO Auto-generated method stub
+		User user = userRepository.findByEmail(email)
+						.orElseThrow(()-> new RuntimeException("User not found"));
+		
+		Pageable pageable = PageRequest.of(page, size);
+		
+		Page<Contact> contacts = contactRepository.findByUser(user, pageable);
+		
+		
+		
+		
+		
+		return contacts
+	            .map(
+	            		contact -> ContactResponse.builder()
+	                    .id(contact.getId())
+	                    .name(contact.getName())
+	                    .nickName(contact.getNickName())
+	                    .company(contact.getCompany())
+	                    .email(contact.getEmail())
+	                    .phone(contact.getPhone())
+	                    .imageUrl(contact.getImageUrl())
+	                    .description(contact.getDescription())
+	                    .createdAt(contact.getCreatedAt())
+	                    .build());
+			
+		}
+
+	@Override
+	public void deleteContact(Long contactId, String email) {
+		// TODO Auto-generated method stub
+		User user = userRepository.findByEmail(email)
+					.orElseThrow(()-> new RuntimeException("User not found"));
+		
+		Contact contact = contactRepository.findById(contactId)
+				.orElseThrow(()->new RuntimeException("Contact not found"));
+		
+		if(!contact.getUser().getUserid().equals(user.getUserid())) {
+			throw new RuntimeException("Unauthorized");
+		}
+		
+		contactRepository.delete(contact);
+		
+		
+	}
+	}
 	
-}
+
